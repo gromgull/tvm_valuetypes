@@ -63,6 +63,7 @@ def deser_hashmapnode(cell, m, ret_dict, prefix, max_elements):
         return
     if m == 0:  # leaf
         ret_dict[prefix.to01()] = cell
+        return 0
     else:  # fork
         l_prefix, r_prefix = prefix.copy(), prefix.copy()
         l_prefix.append(False)
@@ -79,6 +80,7 @@ def deser_hashmapnode(cell, m, ret_dict, prefix, max_elements):
             ret_dict,
             r_prefix,
             max_elements)
+        return 2
 
 
 def parse_hashmap(cell, bitlength, ret_dict, prefix, max_elements=10000):
@@ -89,7 +91,7 @@ def parse_hashmap(cell, bitlength, ret_dict, prefix, max_elements=10000):
     _len, suffix, cell.data.data = deser_hmlabel(cell.data.data, bitlength)
     prefix.extend(suffix)
     m = bitlength - _len
-    deser_hashmapnode(cell.copy(), m, ret_dict, prefix.copy(), max_elements)
+    return deser_hashmapnode(cell.copy(), m, ret_dict, prefix.copy(), max_elements)
 
 
 def test_parse_hashmap():
